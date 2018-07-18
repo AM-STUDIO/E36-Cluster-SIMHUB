@@ -1711,32 +1711,39 @@ void loop() {
 Tone e36SppedTone;
 bool e36SppedToneInitDone = false;
 void CustomProtocolExample3_E36Speedo() {
-	int speedPin = 3;
+  int speedPin = 3;
   int mpgPin = 4;
   int fuelPin = 5;
   int tempPin = 6;
-	if (!e36SppedToneInitDone) {
-		e36SppedTone.begin(speedPin);
-		e36SppedToneInitDone = true;
-	}
+  if (!e36SppedToneInitDone) {
+    e36SppedTone.begin(speedPin);
+    e36SppedToneInitDone = true;
+  }
 
-	int speed = FlowSerialReadStringUntil(';').toInt();
+  bool gamerunning = FlowSerialReadStringUntil(';').toInt();
+  int speed = FlowSerialReadStringUntil(';').toInt();
   int fuel = FlowSerialReadStringUntil(';').toInt();
+  int temp = FlowSerialReadStringUntil(';').toInt();
   int mpg = FlowSerialReadStringUntil('\n').toInt();
 
-	int speedoutput = map(speed, 0, 286, 0, 367);
+  int speedoutput = map(speed, 0, 286, 0, 367);
   int mpgoutput = map(mpg, 0, 100, 255, 0);
+  int tempoutput = map(temp, 40, 120, 100, 0);
   int fueloutput = map(fuel, 0, 100, 0, 162);
 
-int speedcorrect = int(speed, HEX);
-	if (speedoutput<1) {
-		e36SppedTone.stop();
-	}
-	else {
-		e36SppedTone.play(speedoutput);
-	}
+  if(gamerunning)
+  {
+    if (speedoutput<1) 
+    {
+    e36SppedTone.stop();
+    }
+    else 
+    {
+    e36SppedTone.play(speedoutput);
+    }
  analogWrite(mpgPin, mpgoutput); //Mpg Gauge
  analogWrite(fuelPin, fueloutput); //Fuel Gauge
- analogWrite(tempPin, 50); //Temp Gauge set to Midway
+ analogWrite(tempPin, tempoutput); //Temp Gauge
+  }
 }
 
