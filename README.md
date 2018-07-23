@@ -5,6 +5,8 @@ Credit to MorGuux for Sketch Mod and Protocol
 
 Credit to Wotever for SimHub Software
 
+-------------------------------------------------------------
+
 if([DataCorePlugin.GameRunning] = 1, '1', '0') + ';' +
 
 format([DataCorePlugin.GameData.NewData.SpeedKmh],'0') + ';' + 
